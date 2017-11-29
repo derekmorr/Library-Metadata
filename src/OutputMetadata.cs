@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//using System.Threading.Tasks;
 using System.Xml;
 using Landis.Core;
 
@@ -31,8 +28,7 @@ namespace Landis.Library.Metadata
 
         public void RetriveFields(Type dataObjectType)
         {
-            //var dataObject = Activator.CreateInstance<T>();
-            var tpDataObject = dataObjectType;// dataObject.GetType();
+            var tpDataObject = dataObjectType;
             Fields.Clear();
             foreach (var property in tpDataObject.GetProperties())
             {
@@ -48,19 +44,15 @@ namespace Landis.Library.Metadata
 
                             if (sppString)
                             {
-                                //ExtensionMetadata.ModelCore.UI.WriteLine("   Adding XML for Species ...");
                                 foreach (ISpecies species in ExtensionMetadata.ModelCore.Species)
                                 {
-                                    //ExtensionMetadata.ModelCore.UI.WriteLine("   Adding XML for {0} ...", species.Name);
                                     Fields.Add(new FieldMetadata { Name = (property.Name + species.Name), Unit = ((DataFieldAttribute)attributes[0]).Unit, Desc = ((DataFieldAttribute)attributes[0]).Desc, Format = ((DataFieldAttribute)attributes[0]).Format });
                                 }
                             }
                             else if (columnList)
                             {
                                 foreach (String columnName in ExtensionMetadata.ColumnNames)
-                                    //for (int i = 0; i < ExtensionMetadata.ColumnNames.Length; i++)
                                 {
-                                    //Fields.Add(new FieldMetadata { Name = (property.Name + ExtensionMetadata.ColumnNames[i]), Unit = ((DataFieldAttribute)attributes[0]).Unit, Desc = ((DataFieldAttribute)attributes[0]).Desc, Format = ((DataFieldAttribute)attributes[0]).Format });
                                     Fields.Add(new FieldMetadata { Name = (property.Name + columnName), Unit = ((DataFieldAttribute)attributes[0]).Unit, Desc = ((DataFieldAttribute)attributes[0]).Desc, Format = ((DataFieldAttribute)attributes[0]).Format });
                                 }
                             }
@@ -116,13 +108,7 @@ namespace Landis.Library.Metadata
                 node.Attributes.Append(map_DataTypeAtt);
             }
 
-            /*  It is commented so it does not append fiels to the extension xml node
-            node.AppendChild(Get_Fields_XmlNode(doc));
-            */
             return node;
-            
-            //XmlElement element = new XmlElement();
-            //element.Attributes.Append(new XmlAttribute());
         }
 
         public XmlNode Get_Fields_XmlNode(XmlDocument doc)
@@ -138,12 +124,3 @@ namespace Landis.Library.Metadata
         }
     }
 }
-
-
-//using (var stringwriter = new stringwriter())
-//using (var xmltextwriter = xmlwriter.create(stringwriter))
-//{
-//    xmldoc.writeto(xmltextwriter);
-//    xmltextwriter.flush();
-//    return stringwriter.getstringbuilder().tostring();
-//}

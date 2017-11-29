@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Data;
-using System.Linq;
 using System.Text;
 using Landis.Core;
-//using System.Threading.Tasks;
 
 namespace Landis.Library.Metadata
 {
-    public static class DataTableExtensions //<T> where T : new()
+    public static class DataTableExtensions
     {
         private static System.IO.StreamWriter file;
 
@@ -40,21 +36,16 @@ namespace Landis.Library.Metadata
                         bool columnList = ((DataFieldAttribute)attributes[0]).ColumnList;
                         if (sppString)
                         {
-                            //ExtensionMetadata.ModelCore.UI.WriteLine("   Adding column headers for Species ...");
                             foreach (ISpecies species in ExtensionMetadata.ModelCore.Species)
                             {
-                                //ExtensionMetadata.ModelCore.UI.WriteLine("   Adding column header for {0} ...", species.Name);
-                                tbl.Columns.Add(String.Format(property.Name + species.Name), typeof(double)); //property.PropertyType);
+                                tbl.Columns.Add(String.Format(property.Name + species.Name), typeof(double));
                             }
                         }
                         else if (columnList)
                         {
-                            foreach (String columnName in ExtensionMetadata.ColumnNames)// int i = 0; i < ExtensionMetadata.ColumnNames.Length; i++)
+                            foreach (String columnName in ExtensionMetadata.ColumnNames)
                             {
-                                //if (ExtensionMetadata.ColumnNames[i].Trim() == "")
-                                //    break;
-                                //tbl.Columns.Add(String.Format(property.Name + ExtensionMetadata.ColumnNames(i)), typeof(double)); //property.PropertyType);
-                                tbl.Columns.Add(String.Format(property.Name + columnName), typeof(double)); //property.PropertyType);
+                                tbl.Columns.Add(String.Format(property.Name + columnName), typeof(double));
                             }
                         }
                         else
@@ -127,15 +118,8 @@ namespace Landis.Library.Metadata
                 AddDataObject(tbl, obj);
             }
             tbl.AcceptChanges();
-            //return tbl;
         }
 
-        ////------
-        //public static void SaveDataObjectsIntoTable(this DataTable tbl, IEnumerable dataObjects)
-        //{
-        //    tbl.Rows.Clear();
-        //    AppendDataObjects(tbl, dataObjects);
-        //}
 
         //------
         // Function adds a row of data to a data table.
@@ -172,9 +156,7 @@ namespace Landis.Library.Metadata
                             double[] columnValue = (double[])property.GetValue(dataObject, null);
                             int i = 0;
                             foreach (String columnName in ExtensionMetadata.ColumnNames)
-                                //for (int i = 0; i < ExtensionMetadata.ColumnNames.Length; i++)
                             {
-                                //DataColumn clm = tbl.Columns[(property.Name + ExtensionMetadata.ColumnNames[i])];
                                 DataColumn clm = tbl.Columns[(property.Name + columnName)];
                                 string format = ((DataFieldAttribute)attributes[0]).Format;
                                 dataRow[clm] = format == null ? columnValue[i].ToString() : string.Format("{0:" + format + "}", columnValue[i].ToString());
@@ -184,7 +166,7 @@ namespace Landis.Library.Metadata
                         else
                         {
                             object value = property.GetValue(dataObject, null);
-                            DataColumn clm = tbl.Columns[property.Name];//, property.PropertyType);
+                            DataColumn clm = tbl.Columns[property.Name];
                             string format = ((DataFieldAttribute)attributes[0]).Format;
                             dataRow[clm] = format == null ? value : string.Format("{0:" + format + "}", value);
                         }
@@ -199,17 +181,12 @@ namespace Landis.Library.Metadata
         //------
         public static void WriteToFile(this DataTable tbl, string filePath, bool append)
         {
-
-            //System.IO.StreamWriter file;
-  
-
             StringBuilder strb = new StringBuilder();
             if (!append)
             {
                 try
                 {
                     file = new System.IO.StreamWriter(filePath, append);
-                    //file = Landis.Data.CreateTextFile(filePath);
                 }
                 catch (Exception err)
                 {
@@ -223,144 +200,24 @@ namespace Landis.Library.Metadata
                 {
                     strb.AppendFormat("{0},", col.ColumnName);
                 }
-                file.WriteLine(strb.ToString());
-                //file.Close();
-                //file.Dispose();
+                file.WriteLine(strb);
             }
             else
             {
-                //file = Landis.Data.OpenTextFile(filePath);
                 file = new System.IO.StreamWriter(filePath, append);
                 foreach (DataRow dr in tbl.Rows)
                 {
                     strb = new StringBuilder();
                     foreach (DataColumn col in tbl.Columns)
                     {
-                        strb.AppendFormat("{0}, ", dr[col].ToString());
+                        strb.AppendFormat("{0}, ", dr[col]);
                     }
-                    file.WriteLine(strb.ToString());
+                    file.WriteLine(strb);
                 }
             }
             file.Close();
             file.Dispose();
         }
-
-
-        //------
-
-
-
-
-        //public DataTable GetDataTable(this IEnumerable<object> dataObjects)
-        //{
-        //    DataTable tbl = new DataTable();
-        //    foreach (object obj in dataObjects)
-        //    {
-        //        tbl.Rows.Add(GetDataRow(obj));
-        //    }
-        //    tbl.AcceptChanges();
-        //    return tbl;
-        //}
-
-        //------
-        //public DataTable GetDataTable(this IEnumerable<object> dataObjects)
-        //{
-        //    DataTable tbl = new DataTable();
-        //    foreach (object obj in dataObjects)
-        //    {
-        //        tbl.Rows.Add(this.GetDataRow(obj));
-        //    }
-        //    tbl.AcceptChanges();
-        //    return tbl;
-        //}
-
-        //------
-        //public List<FieldMetadata> GetFieldMetadatas()
-        //{
-        //    return this.fieldMetadatas;
-        //}
-
-
-
-        //public static DataTable GetDataTable(this object dataObject)
-        //{
-        //    var tpDataObject = dataObject.GetType();
-
-        //    DataTable tbl = new DataTable();
-        //    DataRow dataRow = tbl.NewRow();
-        //    foreach (var property in tpDataObject.GetProperties())
-        //    {
-        //        var attributes = property.GetCustomAttributes(typeof(DataFieldAttribute), true);
-        //        if (null != attributes && attributes.Length > 0)
-        //        {
-        //            if (property.CanRead)
-        //            {
-        //                object value = property.GetValue(dataObject, null);
-        //                DataColumn clm = tbl.Columns.Add(property.Name, property.PropertyType);
-        //                dataRow[clm] = value;
-        //            }
-        //        }
-        //    }
-
-        //    tbl.Rows.Add(dataRow);
-        //    tbl.AcceptChanges();
-        //    return tbl;
-        //}
-
+       
     }
-
 }
-
-
-
-
-
-
-/*
-
-
-public static class DataObjectExtensions {
- * 
-	public static T ToDataObject<T>( this DataRow dataRow ) where T : new() {
-		var dataObject = Activator.CreateInstance<T>();
-		var tpDataObject = dataObject.GetType();
-
-		foreach ( var property in tpDataObject.GetProperties() ) {
-			var attributes = property.GetCustomAttributes( typeof( DataColumnAttribute ), true );
-			if ( null != attributes && attributes.Length > 0 ) {
-				if ( property.CanWrite ) {
-					DataColumn clm = dataRow.Table.Columns[property.Name];
-					if ( null != clm ) {
-						object value = dataRow[clm];
-						property.SetValue( dataObject, value, null );
-					}
-				}
-			}
-		}
-
-		return dataObject;
-	}
-	public static DataTable ToDataTable( this object dataObject ) {
-		var tpDataObject = dataObject.GetType();
-
-		DataTable tbl = new DataTable();
-		DataRow dataRow = tbl.NewRow();
-		foreach ( var property in tpDataObject.GetProperties() ) {
-			var attributes = property.GetCustomAttributes( typeof( DataColumnAttribute ), true );
-			if ( null != attributes && attributes.Length> 0 ) {
-				if ( property.CanRead ) {
-					object value = property.GetValue( dataObject, null );
-					DataColumn clm = tbl.Columns.Add( property.Name, property.PropertyType );
-					dataRow[clm] = value;
-				}
-			}
-		}
-
-		tbl.Rows.Add( dataRow );
-		tbl.AcceptChanges();
-		return tbl;
-	}
-}
- *
- * 
-*/

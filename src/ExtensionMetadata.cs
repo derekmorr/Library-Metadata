@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 using Landis.Core;
 using Landis.SpatialModeling;
@@ -28,7 +25,6 @@ namespace Landis.Library.Metadata
 
 
         public ExtensionMetadata(ICore mCore)
-        //public ExtensionMetadata()
         {
             modelCore = mCore;
             ScenarioReplicationMetadata = new ScenarioReplicationMetadata();
@@ -48,7 +44,6 @@ namespace Landis.Library.Metadata
             timeIntervalAtt.Value = this.TimeInterval.ToString();
             node.Attributes.Append(timeIntervalAtt);
 
-            //XmlNode srNode = doc.CreateElement("scenario-replication");
             XmlNode outsColl = doc.CreateElement("outputs");
             foreach (OutputMetadata om in OutputMetadatas)
                 outsColl.AppendChild(om.Get_XmlNode(doc));

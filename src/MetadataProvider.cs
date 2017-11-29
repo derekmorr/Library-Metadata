@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data;
-using System.Text;
 using System.Xml;
 
 namespace Landis.Library.Metadata
@@ -70,7 +67,6 @@ namespace Landis.Library.Metadata
 
                    
                     file = new System.IO.StreamWriter(metadataFolderPath + "\\" + folderName + "\\" + om.Name + "_Metadata.xml", false);
-                    //string strMetadata = GetMetadataString();
                     file.WriteLine(outputMetadataNode.OuterXml);
                     file.Close();
                     file.Dispose();
@@ -83,8 +79,6 @@ namespace Landis.Library.Metadata
                 throw new ApplicationException(String.Format("Error generating metadata: {0}.", ex.ToString()));
             }
 
-
-            
             file = new System.IO.StreamWriter(metadataFolderPath + "\\" + folderName + "\\" + fileName + ".xml", false);
             XmlNode metadataNode = doc.CreateElement("landisMetadata");
             metadataNode.AppendChild(((ExtensionMetadata)metadata).Get_XmlNode(doc));
