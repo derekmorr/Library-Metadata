@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-//using System.Data.DataSetExtensions;
-using System.Data.Linq;
 using System.Text;
-//using System.Threading.Tasks;
 using System.Xml;
-//using System.Dynamic;
-//using Microsoft.CSharp.RuntimeBinder;
 
 namespace Landis.Library.Metadata
 {
@@ -16,23 +11,11 @@ namespace Landis.Library.Metadata
     {
         private XmlDocument doc = new XmlDocument();
         XmlNode metadataNode;
-        //private ExtensionMetadata extensionMetadata;// = new ExtensionMetadata();
         private IMetadata metadata; 
 
         public MetadataProvider()
         {
-            //List<OutputMetadata> lst = new List<OutputMetadata>();
-            //lst.All<OutputMetadata>()
-            //IEnumerable<OutputMetadata> q = from l in lst select l;
 
-            //System.Data.datase
-            //OutputMetadata om = new OutputMetadata();
-            //om.GetType().Attributes();
-            //dynamic contact = new ExpandoObject();
-            //contact.Name = "";
-
-            
-            //IAppDomainSetup want To ceate as mataDataTable and use newRow() that returns a dynamic object of the type which is determined by the defined metaDataFields
         }
 
         public MetadataProvider(IMetadata metadata)
@@ -97,14 +80,12 @@ namespace Landis.Library.Metadata
             }
             catch(InvalidCastException ex)
             {
-                //string message = 
                 throw new ApplicationException(String.Format("Error generating metadata: {0}.", ex.ToString()));
             }
 
 
             
             file = new System.IO.StreamWriter(metadataFolderPath + "\\" + folderName + "\\" + fileName + ".xml", false);
-            //string strMetadata = GetMetadataString();
             XmlNode metadataNode = doc.CreateElement("landisMetadata");
             metadataNode.AppendChild(((ExtensionMetadata)metadata).Get_XmlNode(doc));
             file.WriteLine(metadataNode.OuterXml);
