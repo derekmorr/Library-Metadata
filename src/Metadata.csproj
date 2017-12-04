@@ -7,7 +7,7 @@
     <AssemblyProduct>Metadata.Properties</AssemblyProduct>
     <AssemblyCopyright>Copyright ©  2015</AssemblyCopyright>
     <AssemblyVersion>1.0.1</AssemblyVersion>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Landis.Core" Version="1.0.0-CI00001" />
