@@ -10,9 +10,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <!-- XXX: FIX this to use nuget once packages are there -->
-    <ProjectReference Include="../../landis-core-model/model/core/src/Core.csproj" />
-    <ProjectReference Include="../../Library-Spatial/src/api/Landis_SpatialModeling.csproj" />
+    <PackageReference Include="Landis.Core" Version="1.0.0-CI00001" />
+    <PackageReference Include="Landis.SpatialModeling" Version="1.0.0-CI00001" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
